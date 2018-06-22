@@ -1,0 +1,91 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using DevExpress.XtraCharts;
+
+namespace dev
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void simpleButton1_Click(object sender, EventArgs e)
+        {
+            BuilderDevChart();
+        }
+        private DataTable CreateChartData()
+
+        {
+
+            DataTable table = new DataTable("Table1");
+
+            table.Columns.Add("Date", typeof(DateTime));
+
+            table.Columns.Add("Value", typeof(Int32));
+
+            table.Rows.Add(new object[] { System.DateTime.Now, 10 });
+
+            table.Rows.Add(new object[] { System.DateTime.Now.AddMinutes(2), 20 });
+
+            table.Rows.Add(new object[] { System.DateTime.Now.AddMinutes(5), 40 });
+
+            table.Rows.Add(new object[] { System.DateTime.Now.AddMinutes(9), 20 });
+
+            table.Rows.Add(new object[] { System.DateTime.Now.AddMinutes(22), 30 });
+
+            return table;
+
+        }
+        private void BuilderDevChart()
+
+        {
+
+            Series _lineSeries = new Series("利润", ViewType.Line);
+
+            _lineSeries.ArgumentScaleType = ScaleType.Auto;
+
+            _lineSeries.ArgumentDataMember = "Date";
+
+            _lineSeries.ValueDataMembers[0] = "Value";
+
+            _lineSeries.DataSource = CreateChartData();
+
+            chartControl1.Series.Add(_lineSeries);
+            XYDiagram diagram = (XYDiagram)chartControl1.Diagram;
+            AxisX ax = diagram.AxisX;
+            ax.GridSpacingAuto = false;
+            ax.DateTimeMeasureUnit = DateTimeMeasurementUnit.Second;//这个可以根据你自己的情况设置
+            ax.DateTimeGridAlignment = DateTimeMeasurementUnit.Second; //这个是间隔单位
+            ax.GridSpacing = 360;
+            //---------------------------------------------------------------
+            //_lineSeries.ValueScaleType = ScaleType.DateTime;
+
+            //_lineSeries.ArgumentDataMember = "Value";
+
+            //_lineSeries.ValueDataMembers[0] = "Date";
+
+            //_lineSeries.DataSource = CreateChartData();
+
+            //chartControl1.Series.Add(_lineSeries);
+            //XYDiagram _diagram = (XYDiagram)chartControl1.Diagram;
+
+            //_diagram.AxisY.DateTimeMeasureUnit = DateTimeMeasurementUnit.Month;
+
+            //_diagram.AxisY.DateTimeGridAlignment = DateTimeMeasurementUnit.Month;
+
+            //_diagram.AxisY.DateTimeOptions.Format = DateTimeFormat.Custom;
+
+            //_diagram.AxisY.DateTimeOptions.FormatString = "MMMM";
+
+        }
+    }
+}
